@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tools Universe 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #06060a;
+    --surface: #0e0e16;
+    --border: rgba(255,255,255,0.07);
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --accent: #7c6af7;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  body::before {
+    content:'';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 20% 20%, rgba(124,106,247,0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 40% at 80% 80%, rgba(56,189,248,0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .container { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+  header { padding: 3rem 0 2rem; text-align: center; }
+  .badge {
+    display: inline-block;
+    background: rgba(124,106,247,0.15);
+    border: 1px solid rgba(124,106,247,0.4);
+    color: #a89ef8;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.3rem 0.9rem;
+    border-radius: 100px;
+    margin-bottom: 1.2rem;
+  }
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.02em;
+    background: linear-gradient(135deg, #fff 30%, #a89ef8 70%, #7c6af7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.8rem;
+  }
+  .subtitle { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.05em; }
+  .search-wrap { margin: 2rem auto; max-width: 480px; position: relative; }
+  .search-wrap input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem 0.75rem 2.8rem;
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .search-wrap input:focus { border-color: rgba(124,106,247,0.5); }
+  .search-icon { position: absolute; left: 0.9rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem; }
+
+  /* TABS */
+  .tabs-wrapper {
+    position: relative;
+    margin-bottom: 2.5rem;
+  }
+  .tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    justify-content: center;
+  }
+  .tab-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.4rem 0.85rem;
+    border-radius: 6px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.68rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+  }
+  .tab-btn:hover { border-color: rgba(124,106,247,0.4); color: var(--text); }
+  .tab-btn.active {
+    background: rgba(124,106,247,0.2);
+    border-color: rgba(124,106,247,0.6);
+    color: #c4b8ff;
+  }
+
+  /* SECTIONS */
+  .category-section { display: none; animation: fadeUp 0.35s ease; }
+  .category-section.active { display: block; }
+  @keyframes fadeUp { from { opacity:0; transform: translateY(12px); } to { opacity:1; transform: translateY(0); } }
+
+  .cat-header {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .cat-icon { font-size: 1.5rem; }
+  .cat-title { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; color: #fff; }
+  .cat-count { margin-left: auto; font-size: 0.7rem; color: var(--muted); background: var(--surface); border: 1px solid var(--border); padding: 0.2rem 0.6rem; border-radius: 100px; }
+  .sub-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.8rem; margin-top: 1.5rem; }
+  .tools-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 0.75rem; margin-bottom: 0.5rem; }
+  .tool-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 0.9rem 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+  .tool-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(124,106,247,0.06), transparent); opacity: 0; transition: opacity 0.2s; }
+  .tool-card:hover { border-color: rgba(124,106,247,0.5); transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,106,247,0.15); }
+  .tool-card:hover::before { opacity: 1; }
+  .tool-top { display: flex; align-items: center; gap: 0.5rem; }
+  .tool-emoji { font-size: 1.1rem; }
+  .tool-name { font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.82rem; color: #fff; }
+  .tool-desc { font-size: 0.68rem; color: var(--muted); line-height: 1.5; }
+  .tool-tag { display: inline-block; font-size: 0.58rem; padding: 0.12rem 0.45rem; border-radius: 4px; background: rgba(124,106,247,0.12); color: #a89ef8; border: 1px solid rgba(124,106,247,0.2); width: fit-content; }
+  .tool-link-icon { position: absolute; top: 0.7rem; right: 0.7rem; color: var(--muted); font-size: 0.7rem; opacity: 0; transition: opacity 0.2s; }
+  .tool-card:hover .tool-link-icon { opacity: 1; }
+
+  .stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-num { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: #a89ef8; }
+  .stat-label { font-size: 0.65rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  footer { text-align: center; padding: 3rem 0 2rem; color: var(--muted); font-size: 0.7rem; border-top: 1px solid var(--border); margin-top: 3rem; }
+
+  /* NEW badge */
+  .tool-new { display: inline-block; font-size: 0.55rem; padding: 0.1rem 0.4rem; border-radius: 3px; background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.25); margin-left: 0.3rem; vertical-align: middle; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="badge">✦ AI Tools Universe 2026</div>
+    <h1>Every AI Tool<br>You Need</h1>
+    <p class="subtitle">Click a category → explore tools → launch instantly</p>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num" id="totalTools">0</div><div class="stat-label">AI Tools</div></div>
+    <div class="stat"><div class="stat-num" id="totalCats">0</div><div class="stat-label">Categories</div></div>
+    <div class="stat"><div class="stat-num">∞</div><div class="stat-label">Possibilities</div></div>
+  </div>
+
+  <div class="search-wrap">
+    <span class="search-icon">⌕</span>
+    <input type="text" id="searchInput" placeholder="Search tools across all categories..." oninput="filterTools(this.value)">
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <div id="content"></div>
+
+  <footer>AI Tools Universe 2026 — All tools link to their official sites ✦ Built for developers, designers & creators</footer>
+</div>
+
+<script>
+const categories = {
+  frontend: {
+    icon: '🎨', title: 'Frontend Development', subs: {
+      'AI Code Assistants': [
+        { name: 'GitHub Copilot', emoji: '🐙', desc: 'AI pair programmer in your editor', tag: 'Essential', url: 'https://github.com/features/copilot' },
+        { name: 'Cursor', emoji: '⌨️', desc: 'AI-first code editor with codebase awareness', tag: 'Editor', url: 'https://cursor.com' },
+        { name: 'Codeium', emoji: '🔵', desc: 'Free AI code completion for any IDE', tag: 'Free', url: 'https://codeium.com' },
+        { name: 'Tabnine', emoji: '📑', desc: 'Private AI code completions for teams', tag: 'Private', url: 'https://tabnine.com' },
+        { name: 'Windsurf', emoji: '🏄', desc: 'Agentic AI IDE by Codeium', tag: 'Agentic', url: 'https://windsurf.com' },
+        { name: 'Supermaven', emoji: '⚡', desc: 'Blazing fast AI code completion', tag: 'Fast', url: 'https://supermaven.com' },
+        { name: 'Continue', emoji: '▶️', desc: 'Open-source AI code assistant for IDEs', tag: 'Open Source', url: 'https://continue.dev' },
+        { name: 'Aider', emoji: '🤝', desc: 'AI pair programming in your terminal', tag: 'Terminal', url: 'https://aider.chat' },
+        { name: 'Replit AI', emoji: '🔁', desc: 'Code, build, and deploy with AI assistance', tag: 'Cloud IDE', url: 'https://replit.com' },
+        { name: 'Sourcegraph Cody', emoji: '🔍', desc: 'AI coding assistant with codebase context', tag: 'Codebase', url: 'https://sourcegraph.com/cody' },
+        { name: 'JetBrains AI', emoji: '🧠', desc: 'AI Assistant across all JetBrains IDEs', tag: 'JetBrains', url: 'https://jetbrains.com/ai' },
+        { name: 'Amazon Q Developer', emoji: '☁️', desc: 'AWS-native AI coding assistant', tag: 'AWS', url: 'https://aws.amazon.com/q/developer' },
+      ],
+      'UI & App Builders': [
+        { name: 'v0 by Vercel', emoji: '▲', desc: 'Generate React UI from text prompts', tag: 'React', url: 'https://v0.dev' },
+        { name: 'Bolt.new', emoji: '⚡', desc: 'Full-stack web apps in the browser with AI', tag: 'Full-stack', url: 'https://bolt.new' },
+        { name: 'Lovable', emoji: '💜', desc: 'Build production apps by chatting with AI', tag: 'No-code', url: 'https://lovable.dev' },
+        { name: 'Framer AI', emoji: '🖼️', desc: 'Build stunning websites from text with AI', tag: 'Websites', url: 'https://framer.com' },
+        { name: 'Webflow AI', emoji: '🌊', desc: 'Visual web builder with AI tools', tag: 'Visual', url: 'https://webflow.com' },
+        { name: 'Builder.io', emoji: '🏗️', desc: 'Visual CMS with AI design import', tag: 'CMS', url: 'https://builder.io' },
+        { name: 'Uizard', emoji: '🎯', desc: 'Wireframe to UI in seconds with AI', tag: 'Wireframe', url: 'https://uizard.io' },
+        { name: 'Tldraw', emoji: '✏️', desc: 'Sketch to code with Make Real AI', tag: 'Sketch', url: 'https://tldraw.com' },
+      ],
+      'Design to Code': [
+        { name: 'Anima AI', emoji: '🎬', desc: 'Figma to React/HTML with AI', tag: 'Figma', url: 'https://animaapp.com' },
+        { name: 'Locofy', emoji: '🚂', desc: 'Convert designs to frontend code 10x faster', tag: 'Design→Code', url: 'https://locofy.ai' },
+        { name: 'Kombai', emoji: '⚔️', desc: 'Figma to frontend code with context awareness', tag: 'Figma', url: 'https://kombai.com' },
+      ],
+      'AI Website Builders': [
+        { name: 'Wix AI', emoji: '🌐', desc: 'AI-powered website creation wizard', tag: 'Website', url: 'https://wix.com' },
+        { name: 'Durable AI', emoji: '🛡️', desc: 'Build a website in 30 seconds with AI', tag: '30 sec', url: 'https://durable.co' },
+        { name: '10Web AI', emoji: '🔟', desc: 'AI WordPress website builder', tag: 'WordPress', url: 'https://10web.io' },
+        { name: 'Hostinger AI', emoji: '🏠', desc: 'AI website builder from Hostinger', tag: 'Hosting', url: 'https://hostinger.com/ai-website-builder' },
+        { name: 'Dorik AI', emoji: '🎨', desc: 'AI website builder with clean templates', tag: 'Templates', url: 'https://dorik.com' },
+        { name: 'Mixo AI', emoji: '🧪', desc: 'Launch a startup site in seconds', tag: 'Startup', url: 'https://mixo.io' },
+        { name: 'Relume AI', emoji: '🔷', desc: 'AI sitemap and wireframe builder', tag: 'Wireframe', url: 'https://relume.io' },
+        { name: 'Squarespace AI', emoji: '⬛', desc: 'AI-assisted website design from Squarespace', tag: 'Design', url: 'https://squarespace.com' },
+        { name: 'Typedream', emoji: '💭', desc: 'Notion-like no-code website builder with AI', tag: 'No-code', url: 'https://typedream.com' },
+        { name: 'Create.xyz', emoji: '✨', desc: 'Generate full websites by describing them', tag: 'Generate', url: 'https://create.xyz' },
+        { name: 'Stunning', emoji: '⭐', desc: 'AI website builder for small businesses', tag: 'SMB', url: 'https://stunning.so' },
+      ]
+    }
+  },
+  backend: {
+    icon: '⚙️', title: 'Backend Development', subs: {
+      'Code Generation & IDEs': [
+        { name: 'GitHub Copilot', emoji: '🐙', desc: 'Backend code completion and generation', tag: 'Essential', url: 'https://github.com/features/copilot' },
+        { name: 'Cursor', emoji: '⌨️', desc: 'Refactor, explain, and write backend code', tag: 'Editor', url: 'https://cursor.com' },
+        { name: 'Devin AI', emoji: '🤖', desc: 'Fully autonomous AI software engineer', tag: 'Autonomous', url: 'https://devin.ai' },
+        { name: 'Sweep AI', emoji: '🧹', desc: 'AI junior developer for GitHub issues', tag: 'GitHub', url: 'https://sweep.dev' },
+        { name: 'Aider', emoji: '🤝', desc: 'AI pair programming in your terminal', tag: 'Terminal', url: 'https://aider.chat' },
+        { name: 'Codeium', emoji: '🔵', desc: 'Free AI completions for backend code', tag: 'Free', url: 'https://codeium.com' },
+        { name: 'Tabnine', emoji: '📑', desc: 'Private AI code completions', tag: 'Private', url: 'https://tabnine.com' },
+        { name: 'Bloop', emoji: '🔍', desc: 'AI code search and understanding', tag: 'Search', url: 'https://bloop.ai' },
+      ],
+      'Database & API Tools': [
+        { name: 'Supabase', emoji: '🟢', desc: 'AI SQL editor and schema generator', tag: 'SQL', url: 'https://supabase.com' },
+        { name: 'Neon', emoji: '💡', desc: 'AI-assisted serverless Postgres', tag: 'Postgres', url: 'https://neon.tech' },
+        { name: 'Hasura', emoji: '🔥', desc: 'Auto-generate GraphQL APIs from databases', tag: 'GraphQL', url: 'https://hasura.io' },
+        { name: 'HTTPie AI', emoji: '🌐', desc: 'AI-powered API testing and client', tag: 'API Testing', url: 'https://httpie.io' },
+        { name: 'Postman AI', emoji: '📬', desc: 'Generate API tests and docs with AI', tag: 'Testing', url: 'https://postman.com' },
+        { name: 'Xano', emoji: '⚡', desc: 'No-code backend builder with AI', tag: 'No-code', url: 'https://xano.com' },
+        { name: 'Retool', emoji: '🔧', desc: 'Build internal tools with AI assistance', tag: 'Internal Tools', url: 'https://retool.com' },
+        { name: 'Appwrite', emoji: '📦', desc: 'Open-source backend as a service', tag: 'Open Source', url: 'https://appwrite.io' },
+        { name: 'Convex', emoji: '🔄', desc: 'Reactive backend platform with AI', tag: 'Reactive', url: 'https://convex.dev' },
+        { name: 'Zuplo', emoji: '⚡', desc: 'AI-powered API gateway and management', tag: 'API Gateway', url: 'https://zuplo.com' },
+        { name: 'Treblle', emoji: '📊', desc: 'API observability and documentation AI', tag: 'Observability', url: 'https://treblle.com' },
+        { name: 'DBeaver AI', emoji: '🐻', desc: 'AI-assisted database management', tag: 'Database', url: 'https://dbeaver.com' },
+        { name: 'Mage.ai', emoji: '🧙', desc: 'AI data pipeline and orchestration', tag: 'Pipeline', url: 'https://mage.ai' },
+        { name: 'Aiven', emoji: '☁️', desc: 'Managed cloud data infrastructure', tag: 'Managed', url: 'https://aiven.io' },
+      ],
+      'Documentation': [
+        { name: 'Mintlify', emoji: '📝', desc: 'AI-powered developer documentation', tag: 'Docs', url: 'https://mintlify.com' },
+        { name: 'Swimm', emoji: '🏊', desc: 'AI code documentation that stays current', tag: 'Code Docs', url: 'https://swimm.io' },
+      ]
+    }
+  },
+  devops: {
+    icon: '🚀', title: 'DevOps & Infrastructure', subs: {
+      'CI/CD & Pipelines': [
+        { name: 'Harness AI', emoji: '⚙️', desc: 'AI-powered CI/CD pipelines and reliability', tag: 'CI/CD', url: 'https://harness.io' },
+        { name: 'GitHub Actions', emoji: '🐙', desc: 'AI-assisted workflow automation', tag: 'Workflows', url: 'https://github.com/features/actions' },
+        { name: 'GitLab AI', emoji: '🦊', desc: 'AI-powered DevSecOps platform', tag: 'DevSecOps', url: 'https://gitlab.com' },
+        { name: 'Codefresh', emoji: '🔵', desc: 'GitOps-based CI/CD with AI insights', tag: 'GitOps', url: 'https://codefresh.io' },
+        { name: 'Buildkite', emoji: '🏗️', desc: 'Scalable CI/CD pipelines', tag: 'Scalable', url: 'https://buildkite.com' },
+        { name: 'Spacelift', emoji: '🚀', desc: 'Intelligent CI/CD for infrastructure', tag: 'IaC CI/CD', url: 'https://spacelift.io' },
+      ],
+      'Monitoring & Observability': [
+        { name: 'Datadog AI', emoji: '🐶', desc: 'AI-powered monitoring and incident response', tag: 'Monitoring', url: 'https://datadoghq.com' },
+        { name: 'Dynatrace AI', emoji: '🟣', desc: 'AI causation engine for root cause analysis', tag: 'AIOps', url: 'https://dynatrace.com' },
+        { name: 'New Relic AI', emoji: '🟦', desc: 'Grok AI for observability insights', tag: 'Observability', url: 'https://newrelic.com' },
+        { name: 'Grafana AI', emoji: '📈', desc: 'AI-assisted dashboards and alerting', tag: 'Dashboards', url: 'https://grafana.com' },
+        { name: 'Squadcast AI', emoji: '🚨', desc: 'AI-powered incident management', tag: 'Incidents', url: 'https://squadcast.com' },
+        { name: 'LinearB', emoji: '📊', desc: 'AI engineering metrics and insights', tag: 'Metrics', url: 'https://linearb.io' },
+      ],
+      'Infrastructure as Code': [
+        { name: 'Pulumi AI', emoji: '🏗️', desc: 'Generate IaC with natural language', tag: 'IaC', url: 'https://pulumi.com' },
+        { name: 'Terraform AI', emoji: '🟪', desc: 'HashiCorp AI for Terraform configs', tag: 'Terraform', url: 'https://hashicorp.com' },
+        { name: 'k8sGPT', emoji: '☸️', desc: 'AI-powered Kubernetes diagnostics', tag: 'Kubernetes', url: 'https://k8sgpt.ai' },
+        { name: 'Ansible Lightspeed', emoji: '⚡', desc: 'AI for Ansible automation content', tag: 'Ansible', url: 'https://redhat.com' },
+        { name: 'Terrateam', emoji: '🌍', desc: 'Terraform collaboration via GitHub', tag: 'Collaboration', url: 'https://terrateam.io' },
+        { name: 'env0', emoji: '🌿', desc: 'AI-driven infrastructure automation', tag: 'IaC Ops', url: 'https://env0.com' },
+        { name: 'Digger', emoji: '⛏️', desc: 'Open-source IaC orchestration', tag: 'Open Source', url: 'https://digger.dev' },
+        { name: 'Kosli', emoji: '📜', desc: 'AI-powered DevOps compliance tracking', tag: 'Compliance', url: 'https://kosli.com' },
+        { name: 'Kubiya', emoji: '🤖', desc: 'Conversational DevOps AI teammate', tag: 'DevOps Chat', url: 'https://kubiya.ai' },
+        { name: 'AirOps', emoji: '✈️', desc: 'AI workflows for data and DevOps', tag: 'Workflows', url: 'https://airops.com' },
+      ],
+      'Developer Tools': [
+        { name: 'Warp AI', emoji: '🌀', desc: 'AI-powered terminal for developers', tag: 'Terminal', url: 'https://warp.dev' },
+        { name: 'Cortex', emoji: '🧠', desc: 'Internal developer portal with AI', tag: 'IDP', url: 'https://cortex.io' },
+        { name: 'Port', emoji: '⚓', desc: 'AI-powered internal developer platform', tag: 'Platform', url: 'https://getport.io' },
+        { name: 'LaunchDarkly AI', emoji: '🚀', desc: 'AI-assisted feature flags and releases', tag: 'Feature Flags', url: 'https://launchdarkly.com' },
+        { name: 'Cycloid', emoji: '♻️', desc: 'DevOps platform with self-service portal', tag: 'Self-service', url: 'https://cycloid.io' },
+        { name: 'Cloudcraft AI', emoji: '☁️', desc: 'AI cloud architecture diagrams', tag: 'Architecture', url: 'https://cloudcraft.co' },
+        { name: 'Trunk', emoji: '🌳', desc: 'AI merge queue and code quality', tag: 'Code Quality', url: 'https://trunk.io' },
+      ]
+    }
+  },
+  data: {
+    icon: '📊', title: 'Data Analytics', subs: {
+      'BI & Visualization': [
+        { name: 'Tableau AI', emoji: '📉', desc: 'Einstein AI in Tableau for auto-insights', tag: 'Tableau', url: 'https://tableau.com' },
+        { name: 'Power BI Copilot', emoji: '⚡', desc: 'Microsoft Copilot in Power BI', tag: 'Microsoft', url: 'https://powerbi.microsoft.com' },
+        { name: 'Looker AI', emoji: '🔭', desc: 'Google Looker with Gemini AI', tag: 'Google', url: 'https://looker.com' },
+        { name: 'Qlik Sense AI', emoji: '🟢', desc: 'Associative AI analytics platform', tag: 'Associative', url: 'https://qlik.com' },
+        { name: 'Domo AI', emoji: '⭕', desc: 'AI-powered BI for the business cloud', tag: 'BI Cloud', url: 'https://domo.com' },
+        { name: 'Sisense AI', emoji: '🔵', desc: 'Infuse AI analytics into any workflow', tag: 'Embedded', url: 'https://sisense.com' },
+        { name: 'ThoughtSpot', emoji: '💭', desc: 'Search and AI-driven BI analytics', tag: 'Search BI', url: 'https://thoughtspot.com' },
+        { name: 'Metabase AI', emoji: '🦔', desc: 'AI-assisted SQL and dashboards', tag: 'SQL', url: 'https://metabase.com' },
+        { name: 'Hex AI', emoji: '🔷', desc: 'AI-powered data notebooks and apps', tag: 'Notebooks', url: 'https://hex.tech' },
+        { name: 'Polymer', emoji: '🧬', desc: 'Turn spreadsheets into AI dashboards', tag: 'Spreadsheet', url: 'https://polymersearch.com' },
+        { name: 'Datawrapper AI', emoji: '📊', desc: 'Beautiful charts from data with AI', tag: 'Charts', url: 'https://datawrapper.de' },
+        { name: 'Flourish AI', emoji: '🌸', desc: 'Animated data storytelling', tag: 'Storytelling', url: 'https://flourish.studio' },
+        { name: 'Zoho Analytics AI', emoji: '📈', desc: 'Zia AI for Zoho Analytics', tag: 'Zoho', url: 'https://zoho.com/analytics' },
+        { name: 'Yellowfin AI', emoji: '🐟', desc: 'Automated analytics and data stories', tag: 'Automated', url: 'https://yellowfinbi.com' },
+        { name: 'Sigma Computing', emoji: '∑', desc: 'Cloud analytics with spreadsheet UI', tag: 'Cloud', url: 'https://sigmacomputing.com' },
+        { name: 'Count.co', emoji: '🔢', desc: 'Collaborative data notebooks', tag: 'Collaborative', url: 'https://count.co' },
+        { name: 'Equals', emoji: '=', desc: 'AI-powered spreadsheet for data teams', tag: 'Spreadsheet', url: 'https://equals.com' },
+        { name: 'Rows AI', emoji: '📋', desc: 'Spreadsheet with AI analyst built-in', tag: 'Analyst', url: 'https://rows.com' },
+      ],
+      'Predictive & ML': [
+        { name: 'DataRobot', emoji: '🤖', desc: 'Enterprise AI/ML platform', tag: 'Enterprise', url: 'https://datarobot.com' },
+        { name: 'H2O.ai', emoji: '💧', desc: 'Open-source ML and AutoML platform', tag: 'AutoML', url: 'https://h2o.ai' },
+        { name: 'Obviously AI', emoji: '💡', desc: 'No-code ML predictions in minutes', tag: 'No-code ML', url: 'https://obviously.ai' },
+        { name: 'Akkio', emoji: '🎯', desc: 'AI analytics for agencies and SMBs', tag: 'SMB', url: 'https://akkio.com' },
+        { name: 'Julius AI', emoji: '📊', desc: 'Chat with your data, get instant charts', tag: 'Chat', url: 'https://julius.ai' },
+        { name: 'Databricks AI', emoji: '🧱', desc: 'Unified analytics and AI platform', tag: 'Unified', url: 'https://databricks.com' },
+        { name: 'Alteryx AI', emoji: '⚙️', desc: 'Self-service analytics automation', tag: 'Self-service', url: 'https://alteryx.com' },
+        { name: 'IBM Watson Studio', emoji: '🔵', desc: 'Enterprise AI and data science tools', tag: 'Enterprise', url: 'https://ibm.com/watson' },
+        { name: 'Google Vertex AI', emoji: '🔴', desc: 'Unified ML platform from Google', tag: 'Google', url: 'https://cloud.google.com/vertex-ai' },
+        { name: 'Azure ML', emoji: '🔷', desc: 'Microsoft Azure machine learning', tag: 'Microsoft', url: 'https://azure.microsoft.com/ml' },
+        { name: 'Amazon SageMaker', emoji: '☁️', desc: 'Build, train, deploy ML models at scale', tag: 'AWS', url: 'https://aws.amazon.com/sagemaker' },
+        { name: 'RapidMiner', emoji: '⚡', desc: 'Data science and AI platform', tag: 'Platform', url: 'https://rapidminer.com' },
+        { name: 'Pecan AI', emoji: '🥜', desc: 'Predictive analytics for business teams', tag: 'Business', url: 'https://pecan.ai' },
+        { name: 'BigML', emoji: '🌊', desc: 'Machine learning made easy', tag: 'Easy ML', url: 'https://bigml.com' },
+        { name: 'MonkeyLearn', emoji: '🐒', desc: 'No-code text analysis and ML', tag: 'Text ML', url: 'https://monkeylearn.com' },
+      ],
+      'SQL & Data Cleaning': [
+        { name: 'Text2SQL.ai', emoji: '💬', desc: 'Convert English to SQL instantly', tag: 'SQL', url: 'https://text2sql.ai' },
+        { name: 'Outerbase', emoji: '🌌', desc: 'AI-powered database interface', tag: 'Database', url: 'https://outerbase.com' },
+        { name: 'AI2sql', emoji: '🔤', desc: 'Natural language to SQL queries', tag: 'NL→SQL', url: 'https://ai2sql.io' },
+        { name: 'Trifacta AI', emoji: '🌊', desc: 'AI-powered data wrangling platform', tag: 'Wrangling', url: 'https://trifacta.com' },
+        { name: 'Talend AI', emoji: '🔗', desc: 'Data integration and quality AI', tag: 'Integration', url: 'https://talend.com' },
+        { name: 'Pandas AI', emoji: '🐼', desc: 'Conversational data analysis with pandas', tag: 'Python', url: 'https://pandas-ai.com' },
+        { name: 'Cleanlab', emoji: '🧹', desc: 'AI for data-centric quality improvement', tag: 'Data Quality', url: 'https://cleanlab.ai' },
+        { name: 'OpenRefine AI', emoji: '✨', desc: 'Open-source data cleaning tool', tag: 'Open Source', url: 'https://openrefine.org' },
+      ]
+    }
+  },
+  marketing: {
+    icon: '📣', title: 'Marketing', subs: {
+      'Ad Creation': [
+        { name: 'AdCreative.ai', emoji: '🎯', desc: 'Generate high-converting ad creatives with AI', tag: 'Ads', url: 'https://adcreative.ai' },
+        { name: 'Smartly', emoji: '🤖', desc: 'AI-powered paid social automation', tag: 'Paid Social', url: 'https://smartly.io' },
+        { name: 'Albert AI', emoji: '🧮', desc: 'Autonomous digital marketing AI', tag: 'Autonomous', url: 'https://albert.ai' },
+        { name: 'Persado', emoji: '💡', desc: 'AI emotional language for marketing', tag: 'Emotion AI', url: 'https://persado.com' },
+        { name: 'Phrasee', emoji: '🗣️', desc: 'AI brand language and copywriting', tag: 'Brand', url: 'https://phrasee.co' },
+        { name: 'Pencil AI', emoji: '✏️', desc: 'AI ad creation at scale for performance', tag: 'Performance', url: 'https://trypencil.com' },
+        { name: 'Pattern89', emoji: '🔮', desc: 'AI creative intelligence for ads', tag: 'Creative', url: 'https://pattern89.com' },
+        { name: 'Madgicx', emoji: '🎩', desc: 'AI ad management for Facebook & Google', tag: 'Facebook', url: 'https://madgicx.com' },
+        { name: 'Marpipe', emoji: '🗺️', desc: 'Multivariate ad creative testing with AI', tag: 'A/B Test', url: 'https://marpipe.com' },
+        { name: 'Creatopy AI', emoji: '🎨', desc: 'AI-powered ad design and automation', tag: 'Design', url: 'https://creatopy.com' },
+        { name: 'Rocketium', emoji: '🚀', desc: 'Creative automation for marketing teams', tag: 'Creative Ops', url: 'https://rocketium.com' },
+      ],
+      'Email Marketing': [
+        { name: 'Klaviyo AI', emoji: '📧', desc: 'AI email personalization for ecommerce', tag: 'Ecommerce', url: 'https://klaviyo.com' },
+        { name: 'Mailchimp AI', emoji: '🐒', desc: 'AI marketing tools inside Mailchimp', tag: 'Email', url: 'https://mailchimp.com' },
+        { name: 'ActiveCampaign AI', emoji: '⚡', desc: 'AI automation for email marketing', tag: 'Automation', url: 'https://activecampaign.com' },
+        { name: 'HubSpot AI', emoji: '🟠', desc: 'AI for CRM, email, and marketing ops', tag: 'CRM', url: 'https://hubspot.com' },
+        { name: 'Brevo AI', emoji: '🟢', desc: 'AI-powered email and SMS campaigns', tag: 'SMS', url: 'https://brevo.com' },
+        { name: 'Omnisend AI', emoji: '📢', desc: 'Email & SMS automation for ecommerce', tag: 'Ecommerce', url: 'https://omnisend.com' },
+        { name: 'Instantly AI', emoji: '⚡', desc: 'AI cold email outreach at scale', tag: 'Cold Email', url: 'https://instantly.ai' },
+        { name: 'Seventh Sense', emoji: '7️⃣', desc: 'AI send-time optimization for email', tag: 'Timing', url: 'https://theseventhsense.com' },
+        { name: 'GetResponse AI', emoji: '📩', desc: 'AI email marketing and automation', tag: 'All-in-one', url: 'https://getresponse.com' },
+        { name: 'Campaign Monitor AI', emoji: '📊', desc: 'Email marketing with smart tools', tag: 'Smart', url: 'https://campaignmonitor.com' },
+        { name: 'Moosend AI', emoji: '🦌', desc: 'AI email marketing and list management', tag: 'List Mgmt', url: 'https://moosend.com' },
+        { name: 'MailerLite AI', emoji: '💌', desc: 'Easy email marketing with AI features', tag: 'Easy', url: 'https://mailerlite.com' },
+      ],
+      'Marketing Analytics': [
+        { name: 'Google Analytics AI', emoji: '📊', desc: 'AI insights in Google Analytics 4', tag: 'GA4', url: 'https://analytics.google.com' },
+        { name: 'Mixpanel AI', emoji: '🧪', desc: 'Product analytics with AI insights', tag: 'Product', url: 'https://mixpanel.com' },
+        { name: 'Amplitude AI', emoji: '📡', desc: 'AI-powered digital analytics', tag: 'Digital', url: 'https://amplitude.com' },
+        { name: 'Heap AI', emoji: '🗂️', desc: 'Auto-capture analytics with AI', tag: 'Auto-capture', url: 'https://heap.io' },
+        { name: 'Hotjar AI', emoji: '🔥', desc: 'Heatmaps and user behavior AI', tag: 'Heatmaps', url: 'https://hotjar.com' },
+        { name: 'FullStory AI', emoji: '🎥', desc: 'Digital experience intelligence', tag: 'DXI', url: 'https://fullstory.com' },
+        { name: 'Contentsquare', emoji: '🟦', desc: 'AI experience analytics platform', tag: 'Experience', url: 'https://contentsquare.com' },
+        { name: 'Segment AI', emoji: '⚡', desc: 'Customer data platform with AI', tag: 'CDP', url: 'https://segment.com' },
+        { name: '6sense', emoji: '6️⃣', desc: 'AI revenue intelligence platform', tag: 'Revenue', url: 'https://6sense.com' },
+        { name: 'Demandbase', emoji: '🎯', desc: 'AI B2B go-to-market platform', tag: 'B2B', url: 'https://demandbase.com' },
+        { name: 'Mutiny', emoji: '🏴‍☠️', desc: 'AI website personalization for B2B', tag: 'Personalization', url: 'https://mutinyhq.com' },
+        { name: 'Attentive', emoji: '📱', desc: 'AI-powered SMS and email marketing', tag: 'SMS', url: 'https://attentive.com' },
+        { name: 'Optimove', emoji: '📈', desc: 'AI-first customer marketing platform', tag: 'Customer', url: 'https://optimove.com' },
+        { name: 'Braze AI', emoji: '🔥', desc: 'AI customer engagement platform', tag: 'Engagement', url: 'https://braze.com' },
+        { name: 'Drift', emoji: '💬', desc: 'AI conversational marketing platform', tag: 'Conversational', url: 'https://drift.com' },
+        { name: 'Lately AI', emoji: '🕒', desc: 'AI social content from long-form', tag: 'Repurpose', url: 'https://lately.ai' },
+      ]
+    }
+  },
+  content: {
+    icon: '✍️', title: 'Content Creation', subs: {
+      'Text Generation': [
+        { name: 'Jasper AI', emoji: '🤖', desc: 'Enterprise AI writing for marketing teams', tag: 'Enterprise', url: 'https://jasper.ai' },
+        { name: 'Copy.ai', emoji: '✍️', desc: 'AI copywriting for every use case', tag: 'Copywriting', url: 'https://copy.ai' },
+        { name: 'Writesonic', emoji: '⚡', desc: 'AI writer for blogs, ads & ecommerce', tag: 'Blog & Ads', url: 'https://writesonic.com' },
+        { name: 'Rytr', emoji: '🖊️', desc: 'Affordable AI writing assistant', tag: 'Budget', url: 'https://rytr.me' },
+        { name: 'Wordtune', emoji: '🎵', desc: 'Rewrite and improve any sentence with AI', tag: 'Rewrite', url: 'https://wordtune.com' },
+        { name: 'Quillbot', emoji: '🪶', desc: 'Paraphrasing and grammar AI tool', tag: 'Paraphrase', url: 'https://quillbot.com' },
+        { name: 'Anyword', emoji: '🗣️', desc: 'Predictive performance AI copywriting', tag: 'Performance', url: 'https://anyword.com' },
+        { name: 'Hypotenuse AI', emoji: '🔺', desc: 'AI content at scale for ecommerce', tag: 'Ecommerce', url: 'https://hypotenuse.ai' },
+        { name: 'Longshot AI', emoji: '🎯', desc: 'Factual long-form content generation', tag: 'Long-form', url: 'https://longshot.ai' },
+        { name: 'Scalenut', emoji: '🌰', desc: 'AI content intelligence platform', tag: 'SEO Content', url: 'https://scalenut.com' },
+        { name: 'Sudowrite', emoji: '📝', desc: 'AI fiction and creative writing tool', tag: 'Fiction', url: 'https://sudowrite.com' },
+        { name: 'Neuroflash', emoji: '⚡', desc: 'AI content and brand marketing', tag: 'Brand', url: 'https://neuroflash.com' },
+        { name: 'TextCortex', emoji: '🧠', desc: 'AI writing and rewriting in any app', tag: 'Any App', url: 'https://textcortex.com' },
+        { name: 'WordAI', emoji: '🔄', desc: 'AI article spinner and rewriter', tag: 'Rewriter', url: 'https://wordai.com' },
+        { name: 'Ink for All', emoji: '✒️', desc: 'AI content with SEO optimization', tag: 'SEO', url: 'https://inkforall.com' },
+        { name: 'Grammarly', emoji: '✅', desc: 'AI writing and grammar assistant', tag: 'Grammar', url: 'https://grammarly.com' },
+        { name: 'Lex', emoji: '📄', desc: 'AI-powered writing app for creators', tag: 'Creators', url: 'https://lex.page' },
+        { name: 'Writecream', emoji: '🍦', desc: 'AI content for every format', tag: 'Multi-format', url: 'https://writecream.com' },
+        { name: 'Paragraph AI', emoji: '¶', desc: 'Mobile-first AI writing assistant', tag: 'Mobile', url: 'https://paragraphai.com' },
+        { name: 'Copymatic', emoji: '⚙️', desc: 'AI copywriting for web and ads', tag: 'Web Copy', url: 'https://copymatic.ai' },
+      ],
+      'Script Writing': [
+        { name: 'Scriptbook', emoji: '📕', desc: 'AI script analysis and writing', tag: 'Scripts', url: 'https://scriptbook.io' },
+        { name: 'Studiobinder AI', emoji: '🎬', desc: 'AI tools for film production', tag: 'Film', url: 'https://studiobinder.com' },
+        { name: 'Cohesive AI', emoji: '🔗', desc: 'AI editor for scripts and content', tag: 'Editor', url: 'https://cohesive.so' },
+        { name: 'Notion AI', emoji: '⬛', desc: 'AI writing assistant inside Notion', tag: 'Notion', url: 'https://notion.so/product/ai' },
+        { name: 'Narrato', emoji: '📖', desc: 'AI content workspace for teams', tag: 'Team', url: 'https://narrato.io' },
+      ],
+      'Social Media Content': [
+        { name: 'Buffer AI', emoji: '📱', desc: 'AI-assisted social media scheduling', tag: 'Scheduling', url: 'https://buffer.com' },
+        { name: 'FeedHive', emoji: '🍯', desc: 'AI content recycling and social growth', tag: 'Recycling', url: 'https://feedhive.io' },
+        { name: 'Vista Social AI', emoji: '👁️', desc: 'All-in-one social media AI manager', tag: 'Manager', url: 'https://vistasocial.com' },
+        { name: 'Taplio', emoji: '💼', desc: 'AI for LinkedIn growth and content', tag: 'LinkedIn', url: 'https://taplio.com' },
+      ]
+    }
+  },
+  presentation: {
+    icon: '📽️', title: 'Presentation', subs: {
+      'AI Presentation Makers': [
+        { name: 'Gamma', emoji: '⚡', desc: 'AI-powered presentations, docs & webpages in seconds', tag: 'Popular', url: 'https://gamma.app' },
+        { name: 'Beautiful.ai', emoji: '✨', desc: 'Smart slides that design themselves automatically', tag: 'Smart', url: 'https://beautiful.ai' },
+        { name: 'Tome AI', emoji: '📖', desc: 'AI storytelling & presentation tool', tag: 'Storytelling', url: 'https://tome.app' },
+        { name: 'Presentations.AI', emoji: '🤖', desc: 'Full AI slide generation from a single prompt', tag: 'AI-first', url: 'https://presentations.ai' },
+        { name: 'Pitch AI', emoji: '🚀', desc: 'Collaborative deck builder with AI assistance', tag: 'Collab', url: 'https://pitch.com' },
+        { name: 'SlidesAI', emoji: '🎯', desc: 'Generate Google Slides from text instantly', tag: 'Google Slides', url: 'https://slidesai.io' },
+        { name: 'Decktopus AI', emoji: '🐙', desc: 'AI deck builder with voice notes and forms', tag: 'Interactive', url: 'https://decktopus.com' },
+        { name: 'MagicSlides', emoji: '🪄', desc: 'GPT-powered slides from any topic or URL', tag: 'GPT', url: 'https://magicslides.app' },
+        { name: 'Slidebean', emoji: '🫘', desc: 'AI pitch deck design and funding help', tag: 'Pitch Deck', url: 'https://slidebean.com' },
+        { name: 'Storydoc', emoji: '📚', desc: 'Interactive AI presentations for sales', tag: 'Sales', url: 'https://storydoc.com' },
+        { name: 'Plus AI', emoji: '➕', desc: 'AI for Google Slides & PowerPoint add-on', tag: 'Add-on', url: 'https://plusdocs.com' },
+        { name: 'Visme AI', emoji: '🎨', desc: 'AI presentations, infographics & visuals', tag: 'Infographics', url: 'https://visme.co' },
+        { name: 'Canva AI', emoji: '🖌️', desc: 'Magic Design for presentations with AI', tag: 'Design', url: 'https://canva.com/presentations' },
+        { name: 'Microsoft Copilot PPT', emoji: '🔷', desc: 'AI Copilot inside PowerPoint', tag: 'PowerPoint', url: 'https://copilot.microsoft.com' },
+        { name: 'Google Slides AI', emoji: '🔴', desc: 'Gemini AI built into Google Slides', tag: 'Google', url: 'https://slides.google.com' },
+        { name: 'Simplified AI', emoji: '⚡', desc: 'All-in-one AI for presentations and design', tag: 'All-in-one', url: 'https://simplified.com' },
+        { name: 'Curipod', emoji: '🎓', desc: 'AI presentations for educators', tag: 'Education', url: 'https://curipod.com' },
+        { name: 'Sendsteps AI', emoji: '📊', desc: 'AI interactive presentations with quizzes', tag: 'Interactive', url: 'https://sendsteps.com' },
+        { name: 'Piktochart AI', emoji: '🏔️', desc: 'AI infographics and presentations', tag: 'Infographics', url: 'https://piktochart.com' },
+        { name: 'Prezi AI', emoji: '🌀', desc: 'Non-linear AI presentations', tag: 'Non-linear', url: 'https://prezi.com' },
+        { name: 'Design.ai', emoji: '🎭', desc: 'AI design tool for presentations', tag: 'Design', url: 'https://designs.ai' },
+      ]
+    }
+  },
+  uiux: {
+    icon: '🖱️', title: 'UI/UX Design', subs: {
+      'AI Design Tools': [
+        { name: 'Figma AI', emoji: '🔷', desc: 'AI design features inside Figma', tag: 'Figma', url: 'https://figma.com' },
+        { name: 'Galileo AI', emoji: '🌌', desc: 'Generate high-fidelity UI from text', tag: 'UI Gen', url: 'https://usegalileo.ai' },
+        { name: 'Uizard', emoji: '🎯', desc: 'Wireframe to UI in seconds', tag: 'Wireframe', url: 'https://uizard.io' },
+        { name: 'Framer AI', emoji: '🖼️', desc: 'Design and publish websites with AI', tag: 'Websites', url: 'https://framer.com' },
+        { name: 'Visily AI', emoji: '👁️', desc: 'AI wireframing from screenshots or text', tag: 'Wireframe', url: 'https://visily.ai' },
+        { name: 'Relume AI', emoji: '🔷', desc: 'AI sitemap, wireframe & component library', tag: 'Components', url: 'https://relume.io' },
+        { name: 'Motiff', emoji: '🎨', desc: 'AI-powered professional UI design tool', tag: 'Professional', url: 'https://motiff.com' },
+        { name: 'Creatie AI', emoji: '✨', desc: 'AI design tool with smart components', tag: 'Components', url: 'https://creatie.ai' },
+        { name: 'Penpot AI', emoji: '🖊️', desc: 'Open-source Figma alternative with AI', tag: 'Open Source', url: 'https://penpot.app' },
+        { name: 'Magician AI', emoji: '🪄', desc: 'Magical Figma plugin powered by AI', tag: 'Figma Plugin', url: 'https://magician.design' },
+        { name: 'Khroma AI', emoji: '🎨', desc: 'AI color palette generator', tag: 'Colors', url: 'https://khroma.co' },
+        { name: 'Fontjoy AI', emoji: '🔤', desc: 'AI font pairing generator', tag: 'Fonts', url: 'https://fontjoy.com' },
+        { name: 'Sketch AI', emoji: '🖥️', desc: 'AI-enhanced design in Sketch', tag: 'Sketch', url: 'https://sketch.com' },
+        { name: 'Anima AI', emoji: '🎬', desc: 'Design to code conversion', tag: 'Design→Code', url: 'https://animaapp.com' },
+        { name: 'Whimsical AI', emoji: '🌸', desc: 'AI wireframes and flowcharts', tag: 'Flowcharts', url: 'https://whimsical.com' },
+        { name: 'UXpilot', emoji: '✈️', desc: 'AI UX copy and design assistant', tag: 'UX Copy', url: 'https://uxpilot.ai' },
+      ],
+      'User Research & Testing': [
+        { name: 'Attention Insight', emoji: '👁️', desc: 'AI heatmap prediction before launch', tag: 'Heatmap', url: 'https://attentioninsight.com' },
+        { name: 'Maze AI', emoji: '🗺️', desc: 'AI-powered product research', tag: 'Research', url: 'https://maze.co' },
+        { name: 'UserTesting AI', emoji: '🧪', desc: 'AI insights from user testing', tag: 'Testing', url: 'https://usertesting.com' },
+        { name: 'Useberry', emoji: '🫐', desc: 'Prototype testing with AI analysis', tag: 'Prototype', url: 'https://useberry.com' },
+        { name: 'Sprig', emoji: '🌱', desc: 'AI product research and user insights', tag: 'Insights', url: 'https://sprig.com' },
+        { name: 'Lyssna', emoji: '👂', desc: 'Fast user research with AI synthesis', tag: 'Fast', url: 'https://lyssna.com' },
+        { name: 'Marvel AI', emoji: '🦸', desc: 'AI design and prototyping tool', tag: 'Prototype', url: 'https://marvelapp.com' },
+        { name: 'Hotjar AI', emoji: '🔥', desc: 'Heatmaps and session recordings AI', tag: 'Heatmaps', url: 'https://hotjar.com' },
+      ]
+    }
+  },
+  video: {
+    icon: '🎬', title: 'Video Creation', subs: {
+      'AI Video Generation': [
+        { name: 'Runway ML', emoji: '✈️', desc: 'Gen-3 AI video generation and editing', tag: 'Gen-3', url: 'https://runwayml.com' },
+        { name: 'Pika Labs', emoji: '⚡', desc: 'Create and edit videos from text/image', tag: 'Text→Video', url: 'https://pika.art' },
+        { name: 'Sora', emoji: '🌅', desc: 'OpenAI ultra-realistic video generation', tag: 'OpenAI', url: 'https://sora.com' },
+        { name: 'HeyGen', emoji: '👤', desc: 'AI avatar video creation at scale', tag: 'Avatar', url: 'https://heygen.com' },
+        { name: 'Synthesia', emoji: '🤖', desc: 'AI presenter videos in 130+ languages', tag: 'Presenter', url: 'https://synthesia.io' },
+        { name: 'Kling AI', emoji: '🎬', desc: 'Realistic video generation from Kuaishou', tag: 'Realistic', url: 'https://klingai.com' },
+        { name: 'Luma AI', emoji: '🌈', desc: 'Photorealistic video with Dream Machine', tag: 'Dream Machine', url: 'https://lumalabs.ai' },
+        { name: 'D-ID', emoji: '🆔', desc: 'Talking portrait and avatar videos', tag: 'Talking', url: 'https://d-id.com' },
+        { name: 'Deepbrain AI', emoji: '🧠', desc: 'AI video with realistic digital humans', tag: 'Digital Human', url: 'https://deepbrain.io' },
+        { name: 'Elai.io', emoji: '🌱', desc: 'Turn text to video with AI presenters', tag: 'Presenters', url: 'https://elai.io' },
+        { name: 'Colossyan', emoji: '🏛️', desc: 'AI video with workplace actors', tag: 'Workplace', url: 'https://colossyan.com' },
+        { name: 'Steve AI', emoji: '💼', desc: 'Convert blogs and scripts to video', tag: 'Blog→Video', url: 'https://steve.ai' },
+        { name: 'Fliki AI', emoji: '🎙️', desc: 'Text to video and voice in minutes', tag: 'Voice', url: 'https://fliki.ai' },
+        { name: 'Kaiber AI', emoji: '🔮', desc: 'AI video for musicians and creatives', tag: 'Music Video', url: 'https://kaiber.ai' },
+        { name: 'Invideo AI', emoji: '🎞️', desc: 'Script to video in a click', tag: 'Script→Video', url: 'https://invideo.io' },
+      ],
+      'Video Editing & Repurposing': [
+        { name: 'Descript', emoji: '📝', desc: 'Edit video by editing text transcript', tag: 'Text Edit', url: 'https://descript.com' },
+        { name: 'CapCut AI', emoji: '✂️', desc: 'AI video editing and auto-captions', tag: 'Mobile', url: 'https://capcut.com' },
+        { name: 'Veed.io AI', emoji: '🎥', desc: 'Online video editor with AI subtitles', tag: 'Subtitles', url: 'https://veed.io' },
+        { name: 'Captions AI', emoji: '💬', desc: 'AI captions and video polish for creators', tag: 'Captions', url: 'https://captions.ai' },
+        { name: 'Opus Clip', emoji: '✂️', desc: 'AI clips from long-form videos', tag: 'Repurpose', url: 'https://opus.pro' },
+        { name: 'Pictory AI', emoji: '🖼️', desc: 'AI script to video converter', tag: 'Script', url: 'https://pictory.ai' },
+        { name: 'Lumen5', emoji: '💡', desc: 'Turn articles into social videos with AI', tag: 'Social Video', url: 'https://lumen5.com' },
+      ]
+    }
+  },
+  image: {
+    icon: '🖼️', title: 'Image Generation', subs: {
+      'AI Image Generators': [
+        { name: 'Midjourney', emoji: '🎨', desc: 'Stunning AI art via Discord prompts', tag: 'Art', url: 'https://midjourney.com' },
+        { name: 'DALL-E 3', emoji: '🖌️', desc: 'OpenAI image generation from text', tag: 'OpenAI', url: 'https://openai.com/dall-e-3' },
+        { name: 'Stable Diffusion XL', emoji: '🌊', desc: 'Open-source local image generation', tag: 'Open Source', url: 'https://stability.ai' },
+        { name: 'Adobe Firefly', emoji: '🦋', desc: 'Commercial-safe AI image generation', tag: 'Adobe', url: 'https://firefly.adobe.com' },
+        { name: 'Leonardo AI', emoji: '🦁', desc: 'AI art generation with fine control', tag: 'Control', url: 'https://leonardo.ai' },
+        { name: 'Ideogram 2.0', emoji: '💬', desc: 'AI images with legible text rendering', tag: 'Text in Images', url: 'https://ideogram.ai' },
+        { name: 'Playground AI V3', emoji: '🛝', desc: 'Creative AI image generation platform', tag: 'Creative', url: 'https://playground.com' },
+        { name: 'Nightcafe AI', emoji: '🌙', desc: 'Multiple AI art generation styles', tag: 'Multi-style', url: 'https://nightcafe.studio' },
+        { name: 'Canva AI', emoji: '🎭', desc: 'Magic Studio for design generation', tag: 'Design', url: 'https://canva.com' },
+        { name: 'Bing Image Creator', emoji: '🔵', desc: 'Free AI images from Microsoft / DALL-E', tag: 'Free', url: 'https://bing.com/images/create' },
+        { name: 'Krea AI', emoji: '🔮', desc: 'Real-time AI canvas for creatives', tag: 'Real-time', url: 'https://krea.ai' },
+        { name: 'Freepik AI', emoji: '🌟', desc: 'AI image generation from Freepik', tag: 'Stock', url: 'https://freepik.com' },
+        { name: 'Getimg.ai', emoji: '📸', desc: 'AI image generation and editing suite', tag: 'Suite', url: 'https://getimg.ai' },
+        { name: 'Artbreeder', emoji: '🌱', desc: 'Blend and evolve images with AI', tag: 'Blend', url: 'https://artbreeder.com' },
+        { name: 'Dreamlike.art', emoji: '💭', desc: 'Beautiful AI art with style presets', tag: 'Styles', url: 'https://dreamlike.art' },
+        { name: 'DreamStudio', emoji: '🌟', desc: 'Official Stable Diffusion web UI', tag: 'SD UI', url: 'https://dreamstudio.ai' },
+        { name: 'Clipdrop AI', emoji: '📎', desc: 'AI image tools and background removal', tag: 'Editing', url: 'https://clipdrop.co' },
+        { name: 'Pixlr AI', emoji: '🎨', desc: 'AI-powered photo editing in browser', tag: 'Photo Edit', url: 'https://pixlr.com' },
+        { name: 'Fotor AI', emoji: '📷', desc: 'AI photo editing and generation', tag: 'Photo', url: 'https://fotor.com' },
+        { name: 'Starryai', emoji: '⭐', desc: 'AI art generator app for mobile', tag: 'Mobile', url: 'https://starryai.com' },
+      ]
+    }
+  },
+  audio: {
+    icon: '🎵', title: 'Audio & Music', subs: {
+      'Text-to-Speech & Voice': [
+        { name: 'ElevenLabs', emoji: '🎙️', desc: 'Ultra-realistic AI voice cloning & TTS', tag: 'Best TTS', url: 'https://elevenlabs.io' },
+        { name: 'Murf AI', emoji: '🎤', desc: 'Professional AI voiceovers for videos', tag: 'Voiceover', url: 'https://murf.ai' },
+        { name: 'Play.HT', emoji: '▶️', desc: 'AI voices with emotion and style control', tag: 'Emotion', url: 'https://play.ht' },
+        { name: 'Speechify', emoji: '📢', desc: 'Convert any text to natural speech', tag: 'TTS', url: 'https://speechify.com' },
+        { name: 'Resemble AI', emoji: '👥', desc: 'AI voice cloning and synthesis', tag: 'Cloning', url: 'https://resemble.ai' },
+        { name: 'Lovo AI', emoji: '🔊', desc: 'AI voiceover studio for creators', tag: 'Studio', url: 'https://lovo.ai' },
+        { name: 'WellSaid Labs', emoji: '🗣️', desc: 'Enterprise AI voice creation', tag: 'Enterprise', url: 'https://wellsaidlabs.com' },
+        { name: 'Voicemod AI', emoji: '🎭', desc: 'AI voice changer and soundboard', tag: 'Voice Changer', url: 'https://voicemod.net' },
+        { name: 'Descript AI', emoji: '📝', desc: 'Edit audio by editing transcripts', tag: 'Transcript', url: 'https://descript.com' },
+      ],
+      'Music Generation': [
+        { name: 'Suno AI', emoji: '🎵', desc: 'Generate full songs from a text prompt', tag: 'Full Songs', url: 'https://suno.com' },
+        { name: 'Udio', emoji: '🎶', desc: 'High-quality AI music creation', tag: 'Music', url: 'https://udio.com' },
+        { name: 'Mubert', emoji: '🔊', desc: 'AI-generated royalty-free background music', tag: 'Royalty-free', url: 'https://mubert.com' },
+        { name: 'AIVA AI', emoji: '🎼', desc: 'AI classical and cinematic music composer', tag: 'Composer', url: 'https://aiva.ai' },
+        { name: 'Soundraw', emoji: '🎸', desc: 'AI music generator for creators', tag: 'Creators', url: 'https://soundraw.io' },
+        { name: 'Beatoven.ai', emoji: '🥁', desc: 'AI music for podcasts and videos', tag: 'Podcast', url: 'https://beatoven.ai' },
+        { name: 'Loudly AI', emoji: '📣', desc: 'AI music generation and remixing', tag: 'Remix', url: 'https://loudly.com' },
+        { name: 'Boomy AI', emoji: '💥', desc: 'Create and release AI music instantly', tag: 'Release', url: 'https://boomy.com' },
+        { name: 'Musicfy AI', emoji: '🎤', desc: 'AI voice cover song creation', tag: 'Voice Cover', url: 'https://musicfy.lol' },
+      ],
+      'Audio Editing': [
+        { name: 'Adobe Podcast AI', emoji: '🎙️', desc: 'Enhance mic quality with AI', tag: 'Enhance', url: 'https://podcast.adobe.com' },
+        { name: 'Whisper', emoji: '🌬️', desc: 'OpenAI speech-to-text transcription', tag: 'Transcription', url: 'https://openai.com/research/whisper' },
+        { name: 'Otter.ai', emoji: '🦦', desc: 'AI meeting notes and transcription', tag: 'Meetings', url: 'https://otter.ai' },
+        { name: 'Auphonic', emoji: '🔉', desc: 'AI audio mastering for podcasts', tag: 'Mastering', url: 'https://auphonic.com' },
+        { name: 'Krisp AI', emoji: '🔇', desc: 'AI noise cancellation for calls', tag: 'Noise Cancel', url: 'https://krisp.ai' },
+      ]
+    }
+  },
+  coding: {
+    icon: '💻', title: 'Coding Assistants', subs: {
+      'AI Code Editors & Assistants': [
+        { name: 'GitHub Copilot', emoji: '🐙', desc: 'The original AI pair programmer', tag: 'Essential', url: 'https://github.com/features/copilot' },
+        { name: 'Cursor', emoji: '⌨️', desc: 'AI-first code editor, build fast', tag: 'Editor', url: 'https://cursor.com' },
+        { name: 'Windsurf', emoji: '🏄', desc: 'Agentic coding IDE by Codeium', tag: 'Agentic', url: 'https://windsurf.com' },
+        { name: 'Codeium', emoji: '🔵', desc: 'Free AI code completion everywhere', tag: 'Free', url: 'https://codeium.com' },
+        { name: 'Tabnine', emoji: '📑', desc: 'Private AI code completions for teams', tag: 'Private', url: 'https://tabnine.com' },
+        { name: 'Amazon Q Developer', emoji: '☁️', desc: 'AWS AI for code generation and review', tag: 'AWS', url: 'https://aws.amazon.com/q/developer' },
+        { name: 'Sourcegraph Cody', emoji: '🔍', desc: 'AI with full codebase context', tag: 'Codebase', url: 'https://sourcegraph.com/cody' },
+        { name: 'JetBrains AI', emoji: '🧠', desc: 'AI assistant across all JetBrains IDEs', tag: 'JetBrains', url: 'https://jetbrains.com/ai' },
+        { name: 'Replit AI', emoji: '🔁', desc: 'Cloud IDE with AI coding help', tag: 'Cloud IDE', url: 'https://replit.com' },
+        { name: 'Supermaven', emoji: '⚡', desc: 'Blazing fast AI code completion', tag: 'Fast', url: 'https://supermaven.com' },
+        { name: 'Continue', emoji: '▶️', desc: 'Open-source AI code assistant', tag: 'Open Source', url: 'https://continue.dev' },
+        { name: 'Aider', emoji: '🤝', desc: 'Command-line AI coding partner', tag: 'CLI', url: 'https://aider.chat' },
+        { name: 'Devin AI', emoji: '🤖', desc: 'Fully autonomous AI software engineer', tag: 'Autonomous', url: 'https://devin.ai' },
+        { name: 'Sweep AI', emoji: '🧹', desc: 'AI that turns issues into pull requests', tag: 'PR Bot', url: 'https://sweep.dev' },
+        { name: 'Phind', emoji: '🔍', desc: 'AI search and coding assistant for devs', tag: 'Dev Search', url: 'https://phind.com' },
+        { name: 'Blackbox AI', emoji: '⬛', desc: 'AI code generation and search', tag: 'Search', url: 'https://blackbox.ai' },
+        { name: 'AskCodi', emoji: '❓', desc: 'AI coding Q&A in your IDE', tag: 'Q&A', url: 'https://askcodi.com' },
+        { name: 'Pieces for Devs', emoji: '🧩', desc: 'AI-powered code snippet manager', tag: 'Snippets', url: 'https://pieces.app' },
+        { name: 'Augment Code', emoji: '🔋', desc: 'AI for large-scale codebases', tag: 'Enterprise', url: 'https://augmentcode.com' },
+        { name: 'Mutable AI', emoji: '🔄', desc: 'AI accelerated software development', tag: 'Acceleration', url: 'https://mutable.ai' },
+      ]
+    }
+  },
+  seo: {
+    icon: '🔍', title: 'SEO', subs: {
+      'AI SEO Tools': [
+        { name: 'Surfer SEO', emoji: '🏄', desc: 'AI content optimization and SERP analysis', tag: 'Popular', url: 'https://surferseo.com' },
+        { name: 'Semrush AI', emoji: '📡', desc: 'All-in-one SEO suite with AI writing', tag: 'All-in-one', url: 'https://semrush.com' },
+        { name: 'Ahrefs AI', emoji: '⚓', desc: 'Backlink analysis and keyword research AI', tag: 'Backlinks', url: 'https://ahrefs.com' },
+        { name: 'Clearscope', emoji: '🔎', desc: 'AI-powered content grading tool', tag: 'Content Grade', url: 'https://clearscope.io' },
+        { name: 'Frase', emoji: '✍️', desc: 'Research and write SEO content fast', tag: 'Research', url: 'https://frase.io' },
+        { name: 'MarketMuse', emoji: '🎵', desc: 'AI content strategy and planning', tag: 'Strategy', url: 'https://marketmuse.com' },
+        { name: 'NeuronWriter', emoji: '🧠', desc: 'AI SEO content writer with NLP', tag: 'NLP', url: 'https://neuronwriter.com' },
+        { name: 'RankIQ', emoji: '📊', desc: 'AI SEO toolset for bloggers', tag: 'Bloggers', url: 'https://rankiq.com' },
+        { name: 'BrightEdge', emoji: '💡', desc: 'Enterprise AI SEO platform', tag: 'Enterprise', url: 'https://brightedge.com' },
+        { name: 'Conductor', emoji: '🎼', desc: 'AI enterprise SEO and content marketing', tag: 'Enterprise', url: 'https://conductor.com' },
+        { name: 'SE Ranking AI', emoji: '📈', desc: 'Complete SEO platform with AI tools', tag: 'Complete', url: 'https://seranking.com' },
+        { name: 'WriterZen', emoji: '✍️', desc: 'AI keyword research and content workflow', tag: 'Keyword', url: 'https://writerzen.net' },
+        { name: 'Alli AI', emoji: '⚡', desc: 'Automated on-page SEO optimization', tag: 'On-page', url: 'https://alliai.com' },
+        { name: 'Diib', emoji: '📊', desc: 'AI growth and SEO recommendations', tag: 'Growth', url: 'https://diib.com' },
+        { name: 'PageOptimizer Pro', emoji: '📄', desc: 'AI on-page SEO analyzer', tag: 'On-page', url: 'https://pageoptimizerpro.com' },
+        { name: 'Keyword Insights', emoji: '🔑', desc: 'AI keyword clustering and content briefs', tag: 'Clustering', url: 'https://keywordinsights.ai' },
+        { name: 'Scalenut SEO', emoji: '🌰', desc: 'AI SEO content creation platform', tag: 'SEO Content', url: 'https://scalenut.com' },
+        { name: 'Ink for All', emoji: '✒️', desc: 'AI SEO writing with content shield', tag: 'SEO Writing', url: 'https://inkforall.com' },
+      ]
+    }
+  },
+  social: {
+    icon: '📱', title: 'Social Media Automation', subs: {
+      'Social Media AI Tools': [
+        { name: 'Hootsuite AI', emoji: '🦉', desc: 'OwlyWriter AI for social scheduling', tag: 'Scheduling', url: 'https://hootsuite.com' },
+        { name: 'Buffer AI', emoji: '📱', desc: 'AI-assisted social media scheduling', tag: 'Scheduling', url: 'https://buffer.com' },
+        { name: 'Sprout Social AI', emoji: '🌱', desc: 'Enterprise social media management', tag: 'Enterprise', url: 'https://sproutsocial.com' },
+        { name: 'Later AI', emoji: '⏰', desc: 'Visual social media planner with AI', tag: 'Visual', url: 'https://later.com' },
+        { name: 'Publer', emoji: '📣', desc: 'AI social media scheduling tool', tag: 'Scheduling', url: 'https://publer.io' },
+        { name: 'Metricool AI', emoji: '📊', desc: 'Analytics and scheduling all-in-one', tag: 'Analytics', url: 'https://metricool.com' },
+        { name: 'SocialBee AI', emoji: '🐝', desc: 'AI social media content categories', tag: 'Categories', url: 'https://socialbee.com' },
+        { name: 'ContentStudio', emoji: '🎬', desc: 'AI content curation and publishing', tag: 'Curation', url: 'https://contentstudio.io' },
+        { name: 'Ocoya', emoji: '🌊', desc: 'AI social + e-commerce management', tag: 'Ecommerce', url: 'https://ocoya.com' },
+        { name: 'Predis.ai', emoji: '🔮', desc: 'AI social media post and video creator', tag: 'Creator', url: 'https://predis.ai' },
+        { name: 'FeedHive', emoji: '🍯', desc: 'AI content recycling for growth', tag: 'Recycling', url: 'https://feedhive.io' },
+        { name: 'Taplio', emoji: '💼', desc: 'AI-powered LinkedIn growth tool', tag: 'LinkedIn', url: 'https://taplio.com' },
+        { name: 'Tweet Hunter', emoji: '🐦', desc: 'AI for Twitter/X growth and scheduling', tag: 'Twitter/X', url: 'https://tweethunter.io' },
+        { name: 'Vista Social', emoji: '👁️', desc: 'All-in-one social media AI manager', tag: 'All-in-one', url: 'https://vistasocial.com' },
+        { name: 'Flick', emoji: '✨', desc: 'AI hashtag and content strategy tool', tag: 'Hashtags', url: 'https://flick.social' },
+        { name: 'Missinglettr', emoji: '✉️', desc: 'Auto social campaigns from blog posts', tag: 'Blog→Social', url: 'https://missinglettr.com' },
+      ]
+    }
+  },
+  support: {
+    icon: '🎧', title: 'Customer Support AI', subs: {
+      'AI Support Platforms': [
+        { name: 'Intercom AI', emoji: '💬', desc: 'Fin AI agent for customer support', tag: 'Fin AI', url: 'https://intercom.com' },
+        { name: 'Zendesk AI', emoji: '☀️', desc: 'AI for intelligent customer support', tag: 'Enterprise', url: 'https://zendesk.com' },
+        { name: 'Freshdesk AI', emoji: '🌿', desc: 'Freddy AI for customer service', tag: 'Freddy AI', url: 'https://freshdesk.com' },
+        { name: 'Help Scout AI', emoji: '🔭', desc: 'AI assistance for support teams', tag: 'Teams', url: 'https://helpscout.com' },
+        { name: 'Tidio AI', emoji: '🌊', desc: 'Lyro AI chatbot for small businesses', tag: 'SMB', url: 'https://tidio.com' },
+        { name: 'Gorgias', emoji: '🎯', desc: 'AI helpdesk for ecommerce brands', tag: 'Ecommerce', url: 'https://gorgias.com' },
+        { name: 'Kustomer AI', emoji: '👥', desc: 'AI CRM for customer experience', tag: 'CRM', url: 'https://kustomer.com' },
+        { name: 'Ada', emoji: '🤖', desc: 'Automated customer service AI platform', tag: 'Automated', url: 'https://ada.cx' },
+        { name: 'Forethought', emoji: '🧠', desc: 'AI for support ticket deflection', tag: 'Deflection', url: 'https://forethought.ai' },
+        { name: 'Zoho Desk AI', emoji: '🏢', desc: 'Zia AI for Zoho customer support', tag: 'Zoho', url: 'https://zoho.com/desk' },
+        { name: 'Richpanel', emoji: '💎', desc: 'AI-first customer support for ecommerce', tag: 'Ecommerce', url: 'https://richpanel.com' },
+        { name: 'Gladly', emoji: '😊', desc: 'Radically personal customer service AI', tag: 'Personal', url: 'https://gladly.com' },
+        { name: 'Capacity AI', emoji: '💪', desc: 'AI helpdesk and automation platform', tag: 'Helpdesk', url: 'https://capacity.com' },
+        { name: 'Yuma AI', emoji: '🌟', desc: 'AI agent for Shopify customer support', tag: 'Shopify', url: 'https://yuma.ai' },
+        { name: 'Kodif', emoji: '📱', desc: 'AI for complex customer support flows', tag: 'Complex', url: 'https://kodif.io' },
+        { name: 'Hiver AI', emoji: '🌸', desc: 'AI helpdesk for Google Workspace', tag: 'Gmail', url: 'https://hiverhq.com' },
+      ]
+    }
+  },
+  chatbots: {
+    icon: '💬', title: 'AI Chatbots & LLMs', subs: {
+      'General AI Chatbots': [
+        { name: 'ChatGPT', emoji: '🤖', desc: 'OpenAI GPT-4o conversational AI', tag: 'OpenAI', url: 'https://chatgpt.com' },
+        { name: 'Claude', emoji: '🧠', desc: 'Anthropic AI for analysis, writing, coding', tag: 'Anthropic', url: 'https://claude.ai' },
+        { name: 'Gemini', emoji: '💎', desc: 'Google DeepMind multimodal AI', tag: 'Google', url: 'https://gemini.google.com' },
+        { name: 'Microsoft Copilot', emoji: '🔷', desc: 'Microsoft AI powered by GPT-4', tag: 'Microsoft', url: 'https://copilot.microsoft.com' },
+        { name: 'Perplexity AI', emoji: '🔍', desc: 'AI search with cited answers', tag: 'Search', url: 'https://perplexity.ai' },
+        { name: 'Grok', emoji: '⚡', desc: 'xAI Grok with real-time web access', tag: 'xAI', url: 'https://grok.com' },
+        { name: 'Meta AI', emoji: '🔵', desc: 'Meta AI across Facebook, Instagram', tag: 'Meta', url: 'https://meta.ai' },
+        { name: 'Poe AI', emoji: '💬', desc: 'Multi-model AI chatbot platform', tag: 'Multi-model', url: 'https://poe.com' },
+        { name: 'You.com', emoji: '🌐', desc: 'AI search and chat browser', tag: 'Browser', url: 'https://you.com' },
+        { name: 'Le Chat (Mistral)', emoji: '💨', desc: 'Fast European open-weight AI', tag: 'European', url: 'https://chat.mistral.ai' },
+        { name: 'DeepSeek', emoji: '🌊', desc: 'Chinese AI model with strong reasoning', tag: 'Reasoning', url: 'https://chat.deepseek.com' },
+        { name: 'Character.ai', emoji: '🎭', desc: 'Chat with AI personas and characters', tag: 'Characters', url: 'https://character.ai' },
+        { name: 'HuggingChat', emoji: '🤗', desc: 'Free open-source AI chat from HuggingFace', tag: 'Open Source', url: 'https://huggingface.co/chat' },
+        { name: 'Phind', emoji: '🔍', desc: 'AI search and coding assistant', tag: 'Dev Search', url: 'https://phind.com' },
+        { name: 'Pi AI', emoji: '🥧', desc: 'Personal AI for conversations', tag: 'Personal', url: 'https://heypi.com' },
+        { name: 'Kagi Assistant', emoji: '🔎', desc: 'Privacy-first AI search and chat', tag: 'Privacy', url: 'https://kagi.com' },
+        { name: 'Llama 3', emoji: '🦙', desc: 'Meta open-source LLM', tag: 'Open Source', url: 'https://llama.meta.com' },
+        { name: 'Cohere AI', emoji: '🔵', desc: 'Enterprise AI for search and text', tag: 'Enterprise', url: 'https://cohere.com' },
+      ],
+      'Build Chatbots': [
+        { name: 'Botpress', emoji: '🤖', desc: 'Open-source chatbot builder with AI', tag: 'Open Source', url: 'https://botpress.com' },
+        { name: 'Voiceflow', emoji: '🗣️', desc: 'Design and deploy AI agents visually', tag: 'Visual', url: 'https://voiceflow.com' },
+        { name: 'Chatbase', emoji: '💬', desc: 'Custom GPT chatbot from your data', tag: 'Custom', url: 'https://chatbase.co' },
+        { name: 'CustomGPT', emoji: '🏗️', desc: 'ChatGPT for your business data', tag: 'Business', url: 'https://customgpt.ai' },
+        { name: 'LangChain', emoji: '🔗', desc: 'Framework to build LLM-powered apps', tag: 'Framework', url: 'https://langchain.com' },
+      ]
+    }
+  },
+  productivity: {
+    icon: '🧠', title: 'Productivity & Research', subs: {
+      'AI Productivity Tools': [
+        { name: 'Notion AI', emoji: '⬛', desc: 'AI writing, summarizing, brainstorming', tag: 'Notes', url: 'https://notion.so' },
+        { name: 'Microsoft 365 Copilot', emoji: '🔷', desc: 'AI across Word, Excel, Teams, Outlook', tag: 'Microsoft', url: 'https://microsoft.com/microsoft-365/copilot' },
+        { name: 'Google Workspace AI', emoji: '🔴', desc: 'Gemini AI across all Google apps', tag: 'Google', url: 'https://workspace.google.com' },
+        { name: 'Taskade', emoji: '✅', desc: 'AI project management and collaboration', tag: 'Project Mgmt', url: 'https://taskade.com' },
+        { name: 'Mem AI', emoji: '🧠', desc: 'AI-powered self-organizing workspace', tag: 'Workspace', url: 'https://mem.ai' },
+        { name: 'Reflect AI', emoji: '🪞', desc: 'AI networked notes for fast thinkers', tag: 'Notes', url: 'https://reflect.app' },
+        { name: 'Obsidian AI', emoji: '💎', desc: 'Plugins for AI-enhanced note-taking', tag: 'Knowledge', url: 'https://obsidian.md' },
+        { name: 'Superhuman AI', emoji: '⚡', desc: 'AI-powered email client', tag: 'Email', url: 'https://superhuman.com' },
+        { name: 'Sanebox', emoji: '📥', desc: 'AI email management and filtering', tag: 'Email Filter', url: 'https://sanebox.com' },
+      ],
+      'Meetings & Transcription': [
+        { name: 'Otter.ai', emoji: '🦦', desc: 'Real-time transcription and summaries', tag: 'Transcription', url: 'https://otter.ai' },
+        { name: 'Fireflies.ai', emoji: '🔥', desc: 'AI notetaker for every meeting', tag: 'Meetings', url: 'https://fireflies.ai' },
+        { name: 'tl;dv', emoji: '📹', desc: 'AI meeting recorder and highlights', tag: 'Highlights', url: 'https://tldv.io' },
+        { name: 'Fathom AI', emoji: '🌊', desc: 'Free AI meeting notes for Zoom', tag: 'Free', url: 'https://fathom.video' },
+        { name: 'Zoom AI Companion', emoji: '🎥', desc: 'AI built into Zoom meetings', tag: 'Zoom', url: 'https://zoom.us' },
+      ],
+      'Scheduling & Automation': [
+        { name: 'Reclaim AI', emoji: '⏰', desc: 'AI calendar and habit scheduling', tag: 'Calendar', url: 'https://reclaim.ai' },
+        { name: 'Motion AI', emoji: '⚡', desc: 'AI auto-scheduler for tasks', tag: 'Auto-schedule', url: 'https://usemotion.com' },
+        { name: 'Clockwise AI', emoji: '🕐', desc: 'AI meeting optimizer and scheduler', tag: 'Optimizer', url: 'https://getclockwise.com' },
+        { name: 'Zapier AI', emoji: '⚡', desc: 'AI-powered automation workflows', tag: 'Automation', url: 'https://zapier.com' },
+        { name: 'Make AI', emoji: '🔗', desc: 'Visual workflow automation with AI', tag: 'Visual', url: 'https://make.com' },
+      ],
+      'Research': [
+        { name: 'Perplexity AI', emoji: '🔍', desc: 'AI search engine with cited answers', tag: 'Search', url: 'https://perplexity.ai' },
+        { name: 'Elicit', emoji: '📚', desc: 'AI research assistant for papers', tag: 'Papers', url: 'https://elicit.com' },
+        { name: 'Consensus AI', emoji: '✅', desc: 'Search scientific papers by consensus', tag: 'Science', url: 'https://consensus.app' },
+        { name: 'Scholarcy', emoji: '🎓', desc: 'AI flashcard summaries of articles', tag: 'Summary', url: 'https://scholarcy.com' },
+      ]
+    }
+  },
+  automation: {
+    icon: '⚡', title: 'Business Automation', subs: {
+      'AI Workflow Automation': [
+        { name: 'Zapier AI', emoji: '⚡', desc: 'AI automation connecting 6000+ apps', tag: 'Leader', url: 'https://zapier.com' },
+        { name: 'Make', emoji: '🔗', desc: 'Visual automation for complex workflows', tag: 'Visual', url: 'https://make.com' },
+        { name: 'Microsoft Power Automate', emoji: '🔷', desc: 'AI-powered enterprise automation', tag: 'Enterprise', url: 'https://powerautomate.microsoft.com' },
+        { name: 'n8n AI', emoji: '🔀', desc: 'Open-source workflow automation', tag: 'Open Source', url: 'https://n8n.io' },
+        { name: 'Bardeen AI', emoji: '🎵', desc: 'AI web automation from your browser', tag: 'Browser', url: 'https://bardeen.ai' },
+        { name: 'Relay.app', emoji: '📡', desc: 'Human-in-the-loop AI automation', tag: 'Human+AI', url: 'https://relay.app' },
+        { name: 'Tines', emoji: '🏛️', desc: 'Smart automation for security teams', tag: 'Security', url: 'https://tines.com' },
+        { name: 'Lindy AI', emoji: '🔗', desc: 'Build AI employees with no code', tag: 'AI Employee', url: 'https://lindy.ai' },
+        { name: 'Activepieces', emoji: '🧩', desc: 'Open-source Zapier alternative with AI', tag: 'Open Source', url: 'https://activepieces.com' },
+        { name: 'Airtable AI', emoji: '🗃️', desc: 'AI-powered database and automation', tag: 'Database', url: 'https://airtable.com' },
+        { name: 'UiPath AI', emoji: '🤖', desc: 'Enterprise RPA with AI capabilities', tag: 'RPA', url: 'https://uipath.com' },
+        { name: 'Automation Anywhere', emoji: '🔄', desc: 'Intelligent automation platform', tag: 'Intelligent', url: 'https://automationanywhere.com' },
+        { name: 'ServiceNow AI', emoji: '🌐', desc: 'AI for enterprise workflow automation', tag: 'Enterprise', url: 'https://servicenow.com' },
+        { name: 'Pega AI', emoji: '⚙️', desc: 'Low-code AI process automation', tag: 'Low-code', url: 'https://pega.com' },
+        { name: 'Workato AI', emoji: '⚙️', desc: 'Enterprise integration and automation', tag: 'Integration', url: 'https://workato.com' },
+        { name: 'Creatio', emoji: '🏗️', desc: 'No-code AI business process automation', tag: 'No-code', url: 'https://creatio.com' },
+      ]
+    }
+  },
+  resume: {
+    icon: '📄', title: 'Resume & Job Tools', subs: {
+      'AI Resume Builders': [
+        { name: 'Kickresume', emoji: '🦘', desc: 'AI resume and cover letter builder', tag: 'Popular', url: 'https://kickresume.com' },
+        { name: 'Resumaker.ai', emoji: '📝', desc: 'AI-powered resume maker', tag: 'AI Builder', url: 'https://resumaker.ai' },
+        { name: 'Resume.io', emoji: '📄', desc: 'Professional resume with AI assist', tag: 'Professional', url: 'https://resume.io' },
+        { name: 'Enhancv', emoji: '✨', desc: 'Creative resumes with AI content', tag: 'Creative', url: 'https://enhancv.com' },
+        { name: 'Rezi AI', emoji: '🤖', desc: 'ATS-optimized resume builder', tag: 'ATS', url: 'https://rezi.ai' },
+        { name: 'Resume Worded', emoji: '🔍', desc: 'AI resume and LinkedIn scorer', tag: 'Score', url: 'https://resumeworded.com' },
+        { name: 'Novoresume', emoji: '⭐', desc: 'Modern resume templates with AI', tag: 'Templates', url: 'https://novoresume.com' },
+        { name: 'Skillroads AI', emoji: '🛤️', desc: 'AI career and resume development', tag: 'Career', url: 'https://skillroads.com' },
+      ],
+      'Job Search AI': [
+        { name: 'Teal AI', emoji: '🐋', desc: 'AI job tracker and resume tailoring', tag: 'Job Tracker', url: 'https://tealhq.com' },
+        { name: 'Jobscan', emoji: '🔎', desc: 'Match resume to job description with AI', tag: 'Match', url: 'https://jobscan.co' },
+        { name: 'Careerflow', emoji: '🌊', desc: 'AI career navigator and LinkedIn tools', tag: 'LinkedIn', url: 'https://careerflow.ai' },
+        { name: 'LazyApply', emoji: '😴', desc: 'Auto-apply to hundreds of jobs with AI', tag: 'Auto-apply', url: 'https://lazyapply.com' },
+        { name: 'Sonara AI', emoji: '🌞', desc: 'AI job search automation', tag: 'Automation', url: 'https://sonara.ai' },
+        { name: 'Simplify Jobs', emoji: '✅', desc: 'One-click job application with AI', tag: 'One-click', url: 'https://simplify.jobs' },
+        { name: 'Huntr', emoji: '🎯', desc: 'AI job application tracker and CRM', tag: 'Tracker', url: 'https://huntr.co' },
+        { name: 'CVViZ', emoji: '🔬', desc: 'AI recruiting and CV screening', tag: 'Recruiting', url: 'https://cvviz.com' },
+      ]
+    }
+  },
+  finance: {
+    icon: '💰', title: 'Finance & Accounting', subs: {
+      'AI Finance Tools': [
+        { name: 'QuickBooks AI', emoji: '💼', desc: 'Intuit Assist AI for accounting', tag: 'Accounting', url: 'https://quickbooks.intuit.com' },
+        { name: 'Xero AI', emoji: '🔵', desc: 'AI-powered cloud accounting', tag: 'Cloud', url: 'https://xero.com' },
+        { name: 'FreshBooks AI', emoji: '📗', desc: 'AI invoicing and expense tracking', tag: 'Invoicing', url: 'https://freshbooks.com' },
+        { name: 'Sage AI', emoji: '🌿', desc: 'AI accounting for SMBs', tag: 'SMB', url: 'https://sage.com' },
+        { name: 'Brex AI', emoji: '💳', desc: 'AI corporate cards and spend management', tag: 'Spend Mgmt', url: 'https://brex.com' },
+        { name: 'Ramp AI', emoji: '🚀', desc: 'AI finance automation and savings', tag: 'Savings', url: 'https://ramp.com' },
+        { name: 'Datarails', emoji: '📊', desc: 'AI FP&A for Excel-based finance teams', tag: 'FP&A', url: 'https://datarails.com' },
+        { name: 'Pigment', emoji: '🎨', desc: 'AI business planning platform', tag: 'Planning', url: 'https://pigment.com' },
+        { name: 'Planful', emoji: '📋', desc: 'AI financial performance management', tag: 'Performance', url: 'https://planful.com' },
+        { name: 'Mosaic Tech', emoji: '🔷', desc: 'Strategic finance platform with AI', tag: 'Strategic', url: 'https://mosaic.tech' },
+        { name: 'Cube Software', emoji: '🎲', desc: 'FP&A software with AI assistance', tag: 'FP&A', url: 'https://cubesoftware.com' },
+        { name: 'Vena Solutions', emoji: '🌿', desc: 'AI-powered financial planning', tag: 'Planning', url: 'https://venasolutions.com' },
+        { name: 'Coupa AI', emoji: '🛒', desc: 'AI business spend management', tag: 'Spend', url: 'https://coupa.com' },
+        { name: 'Trullion', emoji: '💎', desc: 'AI accounting for revenue and leases', tag: 'Revenue', url: 'https://trullion.com' },
+        { name: 'Botkeeper', emoji: '🤖', desc: 'AI bookkeeping for accounting firms', tag: 'Bookkeeping', url: 'https://botkeeper.com' },
+        { name: 'Vic.ai', emoji: '🧠', desc: 'AI for accounts payable automation', tag: 'AP Automation', url: 'https://vic.ai' },
+      ]
+    }
+  },
+  security: {
+    icon: '🛡️', title: 'Cybersecurity', subs: {
+      'AI Security Tools': [
+        { name: 'CrowdStrike AI', emoji: '🦅', desc: 'AI-native endpoint security platform', tag: 'Endpoint', url: 'https://crowdstrike.com' },
+        { name: 'Darktrace', emoji: '🕶️', desc: 'AI cyber defense with self-learning', tag: 'Self-learning', url: 'https://darktrace.com' },
+        { name: 'SentinelOne AI', emoji: '🛡️', desc: 'Autonomous AI endpoint protection', tag: 'Autonomous', url: 'https://sentinelone.com' },
+        { name: 'Microsoft Sentinel', emoji: '🔷', desc: 'AI SIEM and SOAR from Microsoft', tag: 'SIEM', url: 'https://azure.microsoft.com/products/microsoft-sentinel' },
+        { name: 'Vectra AI', emoji: '🔮', desc: 'AI network detection and response', tag: 'NDR', url: 'https://vectra.ai' },
+        { name: 'Secureworks', emoji: '🔐', desc: 'AI-driven threat detection', tag: 'Threat', url: 'https://secureworks.com' },
+        { name: 'Sophos AI', emoji: '🦔', desc: 'AI intercept X endpoint security', tag: 'Endpoint', url: 'https://sophos.com' },
+        { name: 'Cybereason', emoji: '⚔️', desc: 'AI military-grade cyber defense', tag: 'Military-grade', url: 'https://cybereason.com' },
+        { name: 'Snyk AI', emoji: '🔍', desc: 'AI developer security for code and deps', tag: 'DevSec', url: 'https://snyk.io' },
+        { name: 'Checkmarx AI', emoji: '✅', desc: 'AI application security testing', tag: 'AppSec', url: 'https://checkmarx.com' },
+        { name: 'Orca Security', emoji: '🐋', desc: 'AI cloud security platform', tag: 'Cloud', url: 'https://orca.security' },
+        { name: 'Lacework', emoji: '🕸️', desc: 'AI cloud and workload security', tag: 'Workload', url: 'https://lacework.com' },
+        { name: 'Tenable AI', emoji: '🔭', desc: 'AI vulnerability management', tag: 'Vuln Mgmt', url: 'https://tenable.com' },
+        { name: 'Recorded Future', emoji: '📡', desc: 'AI threat intelligence platform', tag: 'Intel', url: 'https://recordedfuture.com' },
+        { name: 'Abnormal Security', emoji: '⚠️', desc: 'AI email security and threat detection', tag: 'Email Security', url: 'https://abnormalsecurity.com' },
+        { name: 'Axonius', emoji: '🔄', desc: 'AI cyber asset management', tag: 'Assets', url: 'https://axonius.com' },
+      ]
+    }
+  },
+  humanise: {
+    icon: '🧬', title: 'Humanise AI Content', subs: {
+      'AI Humanization Tools': [
+        { name: 'HumanizeAI.pro', emoji: '🧬', desc: 'Bypass AI detection and humanize text', tag: 'Bypass', url: 'https://humanizeai.pro' },
+        { name: 'Undetectable.ai', emoji: '🕵️', desc: 'Rewrite AI text to be undetectable', tag: 'Undetectable', url: 'https://undetectable.ai' },
+        { name: 'StealthWriter AI', emoji: '🥷', desc: 'Stealth AI rewriting tool', tag: 'Stealth', url: 'https://stealthwriter.ai' },
+        { name: 'Bypass AI', emoji: '🔓', desc: 'Humanize AI-generated content', tag: 'Humanize', url: 'https://bypassai.ai' },
+        { name: 'Humanizer.ai', emoji: '🤝', desc: 'Make AI text sound human', tag: 'Human', url: 'https://humanizer.ai' },
+        { name: 'WriteHuman.ai', emoji: '✍️', desc: 'Rewrite AI text as human writing', tag: 'Rewrite', url: 'https://writehuman.ai' },
+        { name: 'AISEO Humanizer', emoji: '🔄', desc: 'SEO-friendly AI content humanizer', tag: 'SEO', url: 'https://aiseo.ai' },
+        { name: 'Paraphraser.io AI', emoji: '🔁', desc: 'AI paraphrasing and rewriting tool', tag: 'Paraphrase', url: 'https://paraphraser.io' },
+        { name: 'Quillbot AI', emoji: '🪶', desc: 'Paraphrase, summarize, and rewrite', tag: 'Paraphrase', url: 'https://quillbot.com' },
+        { name: 'Wordtune Rewrite', emoji: '🎵', desc: 'AI-powered sentence rewriting', tag: 'Rewrite', url: 'https://wordtune.com' },
+        { name: 'Winston AI', emoji: '👔', desc: 'AI detector and humanizer tool', tag: 'Detector', url: 'https://gowinston.ai' },
+        { name: 'GPTZero Bypass', emoji: '🔓', desc: 'Rewrite content to pass GPTZero', tag: 'GPTZero', url: 'https://gptzero.me' },
+      ]
+    }
+  },
+  documents: {
+    icon: '📋', title: 'Document Generation', subs: {
+      'AI Document Tools': [
+        { name: 'Docugami', emoji: '📄', desc: 'AI for business document understanding', tag: 'Business Docs', url: 'https://docugami.com' },
+        { name: 'PandaDoc AI', emoji: '🐼', desc: 'AI-powered proposals and contracts', tag: 'Contracts', url: 'https://pandadoc.com' },
+        { name: 'DocuSign AI', emoji: '✍️', desc: 'AI for intelligent agreement management', tag: 'eSign', url: 'https://docusign.com' },
+        { name: 'Airslate AI', emoji: '🌬️', desc: 'AI document workflow automation', tag: 'Workflow', url: 'https://airslate.com' },
+        { name: 'Typeform AI', emoji: '🎯', desc: 'AI form building and analysis', tag: 'Forms', url: 'https://typeform.com' },
+        { name: 'Jotform AI', emoji: '📋', desc: 'AI-powered form builder with chatbots', tag: 'Forms', url: 'https://jotform.com' },
+        { name: 'Coda AI', emoji: '📓', desc: 'AI doc and app builder all-in-one', tag: 'Docs+Apps', url: 'https://coda.io' },
+        { name: 'Notion AI Docs', emoji: '⬛', desc: 'AI writing and docs inside Notion', tag: 'Notion', url: 'https://notion.so' },
+        { name: 'Google Docs AI', emoji: '🔴', desc: 'Gemini AI inside Google Docs', tag: 'Google', url: 'https://docs.google.com' },
+        { name: 'Microsoft Word Copilot', emoji: '🔷', desc: 'AI Copilot writing in Microsoft Word', tag: 'Word', url: 'https://microsoft.com' },
+        { name: 'Paperpal AI', emoji: '📝', desc: 'AI academic writing and editing', tag: 'Academic', url: 'https://paperpal.com' },
+        { name: 'Writefull AI', emoji: '✅', desc: 'AI for academic language editing', tag: 'Academic', url: 'https://writefull.com' },
+        { name: 'Scribbr AI', emoji: '🖊️', desc: 'AI proofreading and citation tools', tag: 'Citation', url: 'https://scribbr.com' },
+        { name: 'Grantable AI', emoji: '🏆', desc: 'AI grant writing assistant', tag: 'Grants', url: 'https://grantable.co' },
+        { name: 'Draftwise AI', emoji: '⚖️', desc: 'AI legal document drafting', tag: 'Legal', url: 'https://draftwise.com' },
+      ]
+    }
+  },
+  linkedin: {
+    icon: '💼', title: 'LinkedIn Post Creators', subs: {
+      'AI LinkedIn Tools': [
+        { name: 'Taplio AI', emoji: '💼', desc: 'All-in-one LinkedIn growth tool with AI', tag: 'All-in-one', url: 'https://taplio.com' },
+        { name: 'Kleo AI', emoji: '🌊', desc: 'LinkedIn post ideas and viral content', tag: 'Viral', url: 'https://kleo.so' },
+        { name: 'Postwise AI', emoji: '📊', desc: 'AI for Twitter/X and LinkedIn posts', tag: 'Twitter+LI', url: 'https://postwise.ai' },
+        { name: 'Supergrow AI', emoji: '⚡', desc: 'AI LinkedIn post creator and scheduler', tag: 'Scheduler', url: 'https://supergrow.ai' },
+        { name: 'Typefully AI', emoji: '⌨️', desc: 'Draft and schedule LinkedIn and X posts', tag: 'Draft', url: 'https://typefully.com' },
+        { name: 'Tweet Hunter AI', emoji: '🐦', desc: 'AI for viral LinkedIn and Twitter posts', tag: 'Viral', url: 'https://tweethunter.io' },
+        { name: 'AuthorEdge AI', emoji: '✍️', desc: 'LinkedIn thought leadership AI', tag: 'Thought Leader', url: 'https://authoredge.io' },
+        { name: 'Linkedinator AI', emoji: '⛽', desc: 'LinkedIn automation and content AI', tag: 'Automation', url: 'https://linkedinator.com' },
+        { name: 'Shield Analytics AI', emoji: '🛡️', desc: 'LinkedIn analytics and insights AI', tag: 'Analytics', url: 'https://shieldapp.ai' },
+        { name: 'Lempod AI', emoji: '🫁', desc: 'LinkedIn engagement pod automation', tag: 'Engagement', url: 'https://lempod.com' },
+        { name: 'Inlytics AI', emoji: '📈', desc: 'LinkedIn analytics and post optimization', tag: 'Analytics', url: 'https://inlytics.io' },
+        { name: 'Blackmagic AI', emoji: '🪄', desc: 'Twitter/X and LinkedIn analytics AI', tag: 'Analytics', url: 'https://blackmagic.so' },
+        { name: 'Hello Woofy AI', emoji: '🐶', desc: 'AI social media content repurposing', tag: 'Repurpose', url: 'https://hellowoofy.com' },
+        { name: 'SocialJuice AI', emoji: '🍊', desc: 'AI testimonial and social content tool', tag: 'Testimonials', url: 'https://socialjuice.io' },
+      ]
+    }
+  },
+  bugfinding: {
+    icon: '🐛', title: 'Bug Finding & Code Review', subs: {
+      'AI Bug Detection Tools': [
+        { name: 'DeepSource AI', emoji: '🔬', desc: 'Automated code review with AI fixes', tag: 'Auto-fix', url: 'https://deepsource.com' },
+        { name: 'Snyk AI', emoji: '🛡️', desc: 'Developer security for vulnerabilities', tag: 'Security', url: 'https://snyk.io' },
+        { name: 'SonarQube AI', emoji: '📡', desc: 'Code quality and security analysis', tag: 'Quality', url: 'https://sonarqube.org' },
+        { name: 'Code Climate AI', emoji: '🌦️', desc: 'Automated code review platform', tag: 'Review', url: 'https://codeclimate.com' },
+        { name: 'Veracode AI', emoji: '✅', desc: 'AI application security testing', tag: 'AppSec', url: 'https://veracode.com' },
+        { name: 'Checkmarx AI', emoji: '☑️', desc: 'AI SAST for finding code vulnerabilities', tag: 'SAST', url: 'https://checkmarx.com' },
+        { name: 'Semgrep AI', emoji: '🔍', desc: 'Lightweight static analysis with AI rules', tag: 'Static Analysis', url: 'https://semgrep.dev' },
+        { name: 'GitHub Copilot Autofix', emoji: '🐙', desc: 'AI auto-fix for code security alerts', tag: 'GitHub', url: 'https://github.com/features/copilot' },
+        { name: 'Cursor Debugger', emoji: '⌨️', desc: 'AI debugging inside Cursor editor', tag: 'Debugger', url: 'https://cursor.com' },
+        { name: 'JetBrains Qodana AI', emoji: '🧠', desc: 'AI code quality inspection', tag: 'Inspection', url: 'https://jetbrains.com/qodana' },
+        { name: 'Codecov AI', emoji: '📊', desc: 'AI-powered code coverage analysis', tag: 'Coverage', url: 'https://codecov.io' },
+        { name: 'Codacy AI', emoji: '🔍', desc: 'Automated code review for teams', tag: 'Teams', url: 'https://codacy.com' },
+        { name: 'Coverity AI', emoji: '🔒', desc: 'Static application security testing', tag: 'SAST', url: 'https://synopsys.com/software-integrity/security-testing/static-analysis-sast/coverity.html' },
+        { name: 'Kiuwan AI', emoji: '🌊', desc: 'AI SAST and SCA code analysis', tag: 'SAST+SCA', url: 'https://kiuwan.com' },
+        { name: 'Reshift AI', emoji: '🔄', desc: 'AI security testing for Agile teams', tag: 'Agile', url: 'https://reshiftsecurity.com' },
+      ]
+    }
+  }
+};
+
+function countTools() {
+  let total = 0;
+  for (const cat of Object.values(categories)) {
+    for (const tools of Object.values(cat.subs)) total += tools.length;
+  }
+  return total;
+}
+
+function buildTabsHTML() {
+  const tabs = document.getElementById('tabs');
+  let html = `<button class="tab-btn active" onclick="switchTab('all', this)">🌐 All</button>`;
+  for (const [key, cat] of Object.entries(categories)) {
+    html += `<button class="tab-btn" onclick="switchTab('${key}', this)">${cat.icon} ${cat.title}</button>`;
+  }
+  tabs.innerHTML = html;
+}
+
+function toolCardHTML(tool) {
+  return `<a class="tool-card" href="${tool.url}" target="_blank" rel="noopener">
+    <span class="tool-link-icon">↗</span>
+    <div class="tool-top">
+      <span class="tool-emoji">${tool.emoji}</span>
+      <span class="tool-name">${tool.name}</span>
+    </div>
+    <div class="tool-desc">${tool.desc}</div>
+    <span class="tool-tag">${tool.tag}</span>
+  </a>`;
+}
+
+function catHTML(key, cat) {
+  const total = Object.values(cat.subs).flat().length;
+  let html = `<div class="category-section active" id="cat-${key}">
+    <div class="cat-header">
+      <span class="cat-icon">${cat.icon}</span>
+      <span class="cat-title">${cat.title}</span>
+      <span class="cat-count">${total} tools</span>
+    </div>`;
+  for (const [subName, tools] of Object.entries(cat.subs)) {
+    html += `<div class="sub-label">${subName}</div><div class="tools-grid">`;
+    for (const tool of tools) html += toolCardHTML(tool);
+    html += `</div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+let currentTab = 'all';
+
+function renderAll() {
+  const content = document.getElementById('content');
+  let html = '';
+  for (const [key, cat] of Object.entries(categories)) html += catHTML(key, cat);
+  content.innerHTML = html;
+}
+
+function renderSingle(key) {
+  document.getElementById('content').innerHTML = catHTML(key, categories[key]);
+}
+
+function switchTab(key, btn) {
+  currentTab = key;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('searchInput').value = '';
+  if (key === 'all') renderAll();
+  else renderSingle(key);
+}
+
+function filterTools(query) {
+  const q = query.toLowerCase().trim();
+  if (!q) {
+    if (currentTab === 'all') renderAll();
+    else renderSingle(currentTab);
+    return;
+  }
+  const content = document.getElementById('content');
+  let html = '';
+  const catsToSearch = currentTab === 'all' ? Object.entries(categories) : [[currentTab, categories[currentTab]]];
+  for (const [key, cat] of catsToSearch) {
+    const matched = [];
+    for (const tools of Object.values(cat.subs)) {
+      for (const tool of tools) {
+        if (tool.name.toLowerCase().includes(q) || tool.desc.toLowerCase().includes(q) || tool.tag.toLowerCase().includes(q)) matched.push(tool);
+      }
+    }
+    if (matched.length > 0) {
+      html += `<div class="category-section active">
+        <div class="cat-header">
+          <span class="cat-icon">${cat.icon}</span>
+          <span class="cat-title">${cat.title}</span>
+          <span class="cat-count">${matched.length} match</span>
+        </div>
+        <div class="tools-grid">`;
+      for (const tool of matched) html += toolCardHTML(tool);
+      html += `</div></div>`;
+    }
+  }
+  content.innerHTML = html || '<p style="text-align:center;color:var(--muted);padding:3rem">No tools found.</p>';
+}
+
+// Init
+buildTabsHTML();
+renderAll();
+const total = countTools();
+document.getElementById('totalTools').textContent = total + '+';
+document.getElementById('totalCats').textContent = Object.keys(categories).length;
+</script>
+</body>
+</html>
